@@ -1,0 +1,637 @@
+/* ==========================================================================
+   O PROFETA DIÁRIO: jornal bruxo das fotografias dos convidados (/profeta/)
+   Página própria (não carrega o CSS do convite); mesma paleta da Grifinória.
+   O GSAP anima as <figure> (entrada); por isso nada de `transition` em
+   opacity/transform nelas. O "respirar" é no <img> de dentro, por CSS.
+   ========================================================================== */
+
+:root {
+  --night: #100a12;
+  --paper: #e6d5ae;
+  --paper-light: #efe2c2;
+  --paper-edge: #c9ad7c;
+  --ink: #241713;
+  --ink-soft: #4b3328;
+  --crimson: #740f20;
+  --gold: #d8b15a;
+  --gold-bright: #f6d98a;
+  --cream: #f8f0e2;
+  --font-display: 'Cinzel Variable', 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', 'EB Garamond', Garamond, Georgia, serif;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .21 0 0 0 0 .09 0 0 0 .42 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --paper-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .12 0 0 -1.1 0 .62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+  --gutter: clamp(1rem, 4vw, 2.75rem);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--night);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(116, 15, 32, 0.35), transparent 60%),
+    radial-gradient(ellipse at 50% 120%, rgba(216, 177, 90, 0.12), transparent 55%),
+    var(--night);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  overflow-x: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+/* ---- Folha do jornal ---------------------------------------------------- */
+.profeta-page {
+  padding: max(1rem, env(safe-area-inset-top)) max(0.5rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom))
+    max(0.5rem, env(safe-area-inset-left));
+}
+
+.profeta-sheet {
+  position: relative;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(1.1rem, 3vw, 2.5rem) var(--gutter) clamp(2rem, 5vw, 3.5rem);
+  background-color: var(--paper);
+  background-image: var(--paper-grain), var(--paper-mottle), linear-gradient(180deg, var(--paper-light), var(--paper) 30%, #dcc697);
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.25),
+    inset 0 0 90px rgba(120, 80, 30, 0.35),
+    0 40px 90px rgba(0, 0, 0, 0.55);
+}
+
+/* ---- Cabeçalho ---------------------------------------------------------- */
+.profeta-masthead {
+  text-align: center;
+  border-bottom: 3px double var(--ink);
+  padding-bottom: clamp(0.6rem, 2vw, 1rem);
+  margin-bottom: clamp(1rem, 3vw, 1.75rem);
+}
+
+.profeta-masthead__rail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  padding: 0.35rem 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-sans);
+  font-size: clamp(0.62rem, 0.58rem + 0.2vw, 0.75rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.profeta-masthead__date {
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
+.profeta-masthead__title {
+  margin: clamp(0.4rem, 1.5vw, 0.9rem) 0 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.1rem, 0.9rem + 7.5vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 245, 220, 0.5);
+}
+
+/* ---- Manchete ----------------------------------------------------------- */
+.profeta-lead {
+  text-align: center;
+  max-width: 46rem;
+  margin: 0 auto clamp(1rem, 3vw, 1.5rem);
+}
+
+.profeta-lead__headline {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 1.1rem + 2.6vw, 3rem);
+  line-height: 1.05;
+  color: var(--crimson);
+}
+
+.profeta-lead__standfirst {
+  margin: 0.6rem 0 0;
+  font-style: italic;
+  font-size: clamp(1.05rem, 1rem + 0.3vw, 1.25rem);
+  color: var(--ink-soft);
+}
+
+.profeta-lead__count {
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ---- Campos e botões ---------------------------------------------------- */
+.profeta-field {
+  display: grid;
+  gap: 0.3rem;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.profeta-field input {
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(36, 23, 19, 0.45);
+  border-radius: 2px;
+  background: rgba(255, 250, 235, 0.55);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.profeta-field input:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 1px;
+}
+
+.profeta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid #3c0812;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #8d1a2c, var(--crimson));
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: scale 0.15s ease, filter 0.2s ease;
+}
+
+.profeta-btn:hover {
+  filter: brightness(1.1);
+}
+
+.profeta-btn:active {
+  scale: 0.97;
+}
+
+.profeta-btn:disabled {
+  filter: grayscale(0.5) brightness(0.85);
+  cursor: progress;
+}
+
+.profeta-btn--big {
+  width: 100%;
+  min-height: 3.6rem;
+  font-size: 1.02rem;
+}
+
+.profeta-error {
+  margin: 0;
+  color: var(--crimson);
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.profeta-error--soft {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.profeta-loading {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--ink-soft);
+}
+
+/* ---- Porta (palavra mágica) --------------------------------------------- */
+.profeta-gate {
+  display: grid;
+  gap: 1rem;
+  max-width: 26rem;
+  margin: clamp(1rem, 6vw, 3rem) auto;
+  padding: clamp(1.2rem, 4vw, 2rem);
+  border: 1px solid rgba(36, 23, 19, 0.5);
+  outline: 1px solid rgba(36, 23, 19, 0.25);
+  outline-offset: 4px;
+  text-align: center;
+}
+
+.profeta-gate__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 1.2vw, 1.7rem);
+  color: var(--crimson);
+}
+
+.profeta-gate__intro {
+  margin: 0;
+  font-size: 1.12rem;
+  color: var(--ink-soft);
+}
+
+/* ---- Classificado: envio ------------------------------------------------ */
+.profeta-sender {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 40rem;
+  margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
+  padding: clamp(1rem, 3vw, 1.6rem);
+  border: 2px dashed rgba(36, 23, 19, 0.55);
+  background: rgba(255, 248, 228, 0.35);
+}
+
+.profeta-sender--quiet {
+  text-align: center;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+}
+
+.profeta-sender--quiet p {
+  margin: 0;
+}
+
+.profeta-sender__title {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 0.95rem + 0.8vw, 1.45rem);
+  letter-spacing: 0.04em;
+}
+
+.profeta-sender__intro,
+.profeta-sender__hint {
+  margin: 0;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 1.08rem;
+}
+
+.profeta-sender__hint {
+  font-size: 0.98rem;
+  font-style: italic;
+}
+
+.profeta-sender__fields {
+  display: grid;
+  gap: 0.7rem;
+}
+
+@media (min-width: 560px) {
+  .profeta-sender__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.profeta-jobs {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profeta-job {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 0.7rem;
+  align-items: center;
+  padding: 0.4rem;
+  overflow: hidden;
+  border: 1px solid rgba(36, 23, 19, 0.2);
+  background: rgba(255, 250, 235, 0.5);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+}
+
+.profeta-job__thumb {
+  grid-row: 1 / 3;
+  width: 2.6rem;
+  height: 2.6rem;
+  object-fit: cover;
+  border-radius: 2px;
+  background: var(--ink);
+}
+
+.profeta-job__thumb--video {
+  display: grid;
+  place-items: center;
+  color: var(--gold-bright);
+  font-size: 0.9rem;
+}
+
+.profeta-job__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.profeta-job__status {
+  color: var(--ink-soft);
+}
+
+.profeta-job--sent .profeta-job__status {
+  color: #2e5a2b;
+}
+
+.profeta-job--failed .profeta-job__status {
+  color: var(--crimson);
+}
+
+.profeta-job__bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--crimson);
+  transform-origin: left;
+  scale: var(--p, 0) 1;
+}
+
+/* ---- Colunas de fotografias --------------------------------------------- */
+.profeta-columns {
+  columns: 2 10rem;
+  column-gap: clamp(0.75rem, 2vw, 1.4rem);
+  column-rule: 1px solid rgba(36, 23, 19, 0.3);
+}
+
+@media (min-width: 720px) {
+  .profeta-columns {
+    columns: 3 14rem;
+  }
+}
+
+@media (min-width: 1080px) {
+  .profeta-columns {
+    columns: 4 14rem;
+  }
+}
+
+.profeta-photo {
+  break-inside: avoid;
+  margin: 0 0 clamp(0.9rem, 2.5vw, 1.4rem);
+}
+
+.profeta-photo__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0.35rem;
+  overflow: hidden;
+  border: 1px solid rgba(36, 23, 19, 0.55);
+  background: #f3e7c8;
+  cursor: zoom-in;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+.profeta-photo__frame img,
+.profeta-photo__frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #3a2a22;
+  filter: sepia(0.45) contrast(1.05) saturate(0.85);
+  transition: filter 0.6s ease;
+  /* As fotografias do Profeta se mexem: um "respirar" lento, deslocado por quadro. */
+  animation: profeta-breathe 11s ease-in-out infinite alternate;
+  animation-delay: inherit;
+}
+
+.profeta-photo.is-idle .profeta-photo__frame img,
+.profeta-photo.is-idle .profeta-photo__frame video {
+  animation-play-state: paused;
+}
+
+.profeta-photo__frame:hover img,
+.profeta-photo__frame:focus-visible img,
+.profeta-photo__frame:hover video,
+.profeta-photo__frame:focus-visible video,
+.profeta-photo__frame:active img {
+  filter: none;
+}
+
+@keyframes profeta-breathe {
+  from {
+    scale: 1;
+    translate: 0 0;
+  }
+  to {
+    scale: 1.07;
+    translate: -1.5% -1%;
+  }
+}
+
+.profeta-photo__play {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(16, 10, 18, 0.7);
+  color: var(--gold-bright);
+}
+
+.profeta-photo figcaption {
+  display: grid;
+  gap: 0.1rem;
+  padding-top: 0.35rem;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.profeta-photo__credit {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.profeta-photo__caption {
+  font-style: italic;
+  color: var(--ink);
+}
+
+.profeta-empty {
+  max-width: 30rem;
+  margin: 2rem auto;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--ink-soft);
+}
+
+/* ---- Fotografia ampliada ------------------------------------------------ */
+.profeta-viewer {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(10, 6, 12, 0.94);
+  color: var(--cream);
+}
+
+.profeta-viewer::backdrop {
+  background: rgba(10, 6, 12, 0.85);
+}
+
+.profeta-viewer__stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 3.5rem 0.75rem 3rem;
+}
+
+.profeta-viewer__figure {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.profeta-viewer__media {
+  display: block;
+  max-width: min(100%, 92vw);
+  max-height: calc(100dvh - 9rem);
+  width: auto;
+  height: auto;
+  border: 6px solid #f3e7c8;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  background: #000;
+}
+
+.profeta-viewer__caption {
+  display: grid;
+  gap: 0.15rem;
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+.profeta-viewer__caption span {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.profeta-viewer__counter {
+  position: absolute;
+  top: 1.1rem;
+  left: 1rem;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: rgba(248, 240, 226, 0.75);
+}
+
+.profeta-icon-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  border: 1px solid rgba(216, 177, 90, 0.45);
+  border-radius: 50%;
+  background: rgba(16, 10, 18, 0.65);
+  color: var(--gold-bright);
+  cursor: pointer;
+  transition: scale 0.15s ease;
+}
+
+.profeta-icon-btn:active {
+  scale: 0.94;
+}
+
+.profeta-viewer__close {
+  top: 0.6rem;
+  right: 0.6rem;
+}
+
+.profeta-viewer__nav {
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.profeta-viewer__nav--prev {
+  left: 0.5rem;
+}
+
+.profeta-viewer__nav--next {
+  right: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .profeta-viewer__nav {
+    top: auto;
+    bottom: 0.6rem;
+    translate: none;
+  }
+}
+
+/* ---- Movimento reduzido ------------------------------------------------- */
+.is-reduced .profeta-photo__frame img,
+.is-reduced .profeta-photo__frame video {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profeta-photo__frame img,
+  .profeta-photo__frame video {
+    animation: none;
+  }
+}

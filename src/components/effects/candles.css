@@ -1,0 +1,115 @@
+.candles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.candle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: calc(1rem * var(--s));
+  height: calc(6.5rem * var(--s));
+  will-change: transform;
+}
+
+.candle__bob {
+  position: absolute;
+  inset: 0;
+  animation: candle-float 7s ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.candle__body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 76%;
+  border-radius: 40% 40% 3px 3px / 10% 10% 3px 3px;
+  background: linear-gradient(90deg, #b9a88c 0%, #f4ead6 35%, #fffaf0 50%, #e2d4bb 70%, #a8977a 100%);
+  box-shadow: 0 0 calc(1.2rem * var(--s)) rgba(246, 217, 138, 0.18);
+}
+
+/* Gota de cera escorrendo */
+.candle__body::after {
+  content: '';
+  position: absolute;
+  top: 6%;
+  left: 18%;
+  width: 26%;
+  height: 22%;
+  border-radius: 0 0 50% 50%;
+  background: linear-gradient(90deg, #efe2c9, #fffaf0);
+}
+
+.candle__wick {
+  position: absolute;
+  left: 47%;
+  bottom: 75%;
+  width: 6%;
+  min-width: 1px;
+  height: 5%;
+  background: #2c1a10;
+}
+
+.candle__flame {
+  position: absolute;
+  left: 50%;
+  bottom: 78%;
+  width: 62%;
+  height: 22%;
+  transform: translateX(-50%);
+  transform-origin: 50% 90%;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  background: radial-gradient(60% 50% at 50% 70%, #ffffff 0%, #fff1b8 30%, #f6b94a 62%, rgba(232, 120, 40, 0) 100%);
+  animation: flame-flicker 1.6s ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.candle__glow {
+  position: absolute;
+  left: 50%;
+  bottom: 82%;
+  width: 600%;
+  aspect-ratio: 1;
+  transform: translate(-50%, 50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(246, 205, 120, 0.42), rgba(232, 160, 70, 0.12) 45%, rgba(232, 160, 70, 0) 100%);
+  animation: glow-breathe 3.2s ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+@keyframes candle-float {
+  from {
+    transform: translate3d(0, -6%, 0) rotate(-1.5deg);
+  }
+  to {
+    transform: translate3d(0, 6%, 0) rotate(1.5deg);
+  }
+}
+
+@keyframes flame-flicker {
+  0% {
+    transform: translateX(-50%) scale(1, 1) skewX(0deg);
+  }
+  35% {
+    transform: translateX(-50%) scale(0.92, 1.08) skewX(-3deg);
+  }
+  70% {
+    transform: translateX(-50%) scale(1.05, 0.95) skewX(2deg);
+  }
+  100% {
+    transform: translateX(-50%) scale(0.96, 1.04) skewX(-1deg);
+  }
+}
+
+@keyframes glow-breathe {
+  from {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 1;
+  }
+}

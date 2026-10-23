@@ -1,0 +1,223 @@
+/* ==========================================================================
+   CAPÍTULO V — O MAPA DA CELEBRAÇÃO
+   ========================================================================== */
+.map {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  max-width: 68rem;
+  margin: 0 auto;
+  perspective: 1600px;
+}
+
+@media (min-width: 900px) {
+  .map {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr) minmax(0, 1fr);
+    gap: 0;
+  }
+  .map__panel--left {
+    transform-origin: 100% 50%;
+    box-shadow:
+      inset -14px 0 18px -14px rgba(80, 50, 20, 0.6),
+      0 40px 70px -30px rgba(0, 0, 0, 0.9);
+  }
+  .map__panel--right {
+    transform-origin: 0% 50%;
+    box-shadow:
+      inset 14px 0 18px -14px rgba(80, 50, 20, 0.6),
+      0 40px 70px -30px rgba(0, 0, 0, 0.9);
+  }
+}
+
+.map__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.4rem, 3vw, 2.4rem);
+  text-align: center;
+  color: var(--color-ink);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
+}
+
+.map__panel::before {
+  content: '';
+  position: absolute;
+  inset: 0.6rem;
+  border: 1px solid rgba(158, 122, 51, 0.5);
+  pointer-events: none;
+}
+
+.map__label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  padding-left: 0.4em;
+  text-transform: uppercase;
+  color: var(--color-crimson);
+}
+
+.calendar-page {
+  display: grid;
+  justify-items: center;
+  margin: 0.25rem 0;
+  padding: 1rem 1.8rem 0.9rem;
+  min-width: 11rem;
+  border-radius: 3px;
+  background: rgba(255, 250, 236, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(158, 122, 51, 0.5),
+    0 12px 20px -12px rgba(60, 30, 10, 0.5);
+  line-height: 1;
+}
+
+.calendar-page__weekday,
+.calendar-page__month {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.calendar-page__day {
+  margin: 0.3rem 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 3rem + 4vw, 5.5rem);
+  font-weight: 700;
+  color: var(--color-crimson);
+}
+
+.calendar-page__year {
+  margin-top: 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.map__line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.map__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--color-crimson);
+  flex: none;
+}
+
+.map__pending {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-ink-soft);
+}
+
+.map__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.map__actions .btn {
+  font-size: 0.7rem;
+}
+
+.map__btn-ics {
+  color: #5a0c1b;
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(116, 15, 32, 0.45) inset;
+}
+
+.map__btn-ics:hover:not(:disabled) {
+  color: var(--color-cream);
+  background: var(--color-crimson);
+}
+
+.map__pin {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-crimson);
+}
+
+/* Ícone clicável: um halo leve convida ao toque; "aperto" pela propriedade scale. */
+.map__pin-link {
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(116, 15, 32, 0.12), transparent 70%);
+  transition:
+    scale 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.map__pin-link:hover {
+  scale: 1.12;
+  background-color: rgba(116, 15, 32, 0.08);
+}
+
+.map__pin-link:active {
+  scale: 0.95;
+}
+
+.map__venue {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: #4f0b17;
+}
+
+.map__address {
+  margin: 0;
+  max-width: 20rem;
+}
+
+.map__panel--center {
+  position: relative;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 20rem;
+  padding-inline: clamp(1rem, 2vw, 1.6rem);
+  overflow: hidden;
+}
+
+.map__plan {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+  aspect-ratio: 200 / 266;
+}
+
+.footprint {
+  opacity: 0.4;
+}
+
+.map__legend {
+  position: relative;
+  margin: 0;
+  padding: 0.3rem 0.8rem;
+  max-width: 15rem;
+  border-radius: 40%;
+  background: radial-gradient(closest-side, rgba(240, 225, 190, 0.9), rgba(240, 225, 190, 0));
+  font-family: var(--font-script);
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: #5a3a1a;
+}

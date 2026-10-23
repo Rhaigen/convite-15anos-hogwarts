@@ -1,0 +1,6 @@
+familia;nome;telefone;parentesco;menor;pode_responder
+Família Exemplo;Carlos Exemplo;(31) 98888-7777;pai;não;
+Família Exemplo;Marta Exemplo;(31) 97777-6666;mãe;não;
+Família Exemplo;Pedro Exemplo;;filho;sim;
+Família Exemplo;Ana Exemplo;;filha;não;não
+Vovó Lúcia;Lúcia Exemplo Dias;;avó;não;

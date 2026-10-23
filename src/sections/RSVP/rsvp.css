@@ -1,0 +1,240 @@
+/* ==========================================================================
+   CAPÍTULO VII — A REDE DE FLU (confirmação pelo WhatsApp)
+   ========================================================================== */
+.rsvp-card {
+  width: min(100%, 38rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 3.5rem) clamp(1.25rem, 6vw, 3.25rem);
+  border-radius: 3px;
+  box-shadow:
+    0 50px 90px -40px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(122, 86, 40, 0.25) inset;
+}
+
+.rsvp-card::before {
+  content: '';
+  position: absolute;
+  inset: 0.7rem;
+  border: 1px solid rgba(158, 122, 51, 0.5);
+  pointer-events: none;
+}
+
+.rsvp-card__corner {
+  position: absolute;
+  width: 2.6rem;
+  height: auto;
+  color: var(--color-gold-deep);
+  pointer-events: none;
+}
+
+.rsvp-card__corner--tl {
+  top: 0.4rem;
+  left: 0.4rem;
+}
+
+.rsvp-card__corner--br {
+  bottom: 0.4rem;
+  right: 0.4rem;
+  transform: scale(-1, -1);
+}
+
+.rsvp-card__closed {
+  margin: 0;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* Halo verde das chamas em volta do cartão (luz 'floo' em animations/ambient.ts).
+   No celular o cartão cobre o brilho do fundo, então o halo é mais forte ali. */
+.floo--lit {
+  box-shadow:
+    0 0 70px -10px rgba(64, 214, 132, 0.22),
+    0 50px 90px -40px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(122, 86, 40, 0.25) inset;
+}
+
+@media (max-width: 700px) {
+  .floo--lit {
+    box-shadow:
+      0 0 46px 4px rgba(64, 214, 132, 0.34),
+      0 0 0 1px rgba(122, 86, 40, 0.25) inset;
+  }
+}
+
+/* Cartão do Pó de Flu */
+.floo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  text-align: center;
+}
+
+.floo__flames {
+  width: clamp(7.5rem, 30vw, 9.5rem);
+  height: auto;
+  margin-bottom: -0.4rem;
+  overflow: visible;
+}
+
+.floo__title {
+  margin: 0;
+  max-width: 24rem;
+  font-size: var(--step-1);
+  line-height: 1.25;
+  text-wrap: balance;
+  color: #4f0b17;
+}
+
+.floo__text {
+  margin: 0;
+  max-width: 28rem;
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+
+.floo__steps {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  color: var(--color-ink-soft);
+}
+
+/* Itens alinhados à esquerda num bloco centralizado (quebram bem no celular). */
+.floo__steps {
+  justify-items: start;
+  text-align: left;
+}
+
+.floo__steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.floo__step-icon {
+  flex: none;
+  margin-top: 0.2em;
+  color: #128a52;
+}
+
+.floo__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.6rem;
+}
+
+.floo__button {
+  width: 100%;
+  min-height: 3.4rem;
+  font-size: 0.85rem;
+}
+
+/* Brilho verde das chamas no botão (sombra: não conflita com o GSAP). */
+.floo__button:hover:not(:disabled),
+.floo__button:focus-visible {
+  box-shadow:
+    0 0 0 1px rgba(246, 217, 138, 0.75) inset,
+    0 0 30px rgba(77, 224, 143, 0.45),
+    0 12px 26px -12px rgba(56, 7, 17, 0.9);
+}
+
+@media (min-width: 560px) {
+  .floo__button {
+    width: auto;
+    min-width: 18rem;
+  }
+}
+
+.floo__number {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  color: var(--color-ink-soft);
+}
+
+.floo__number strong {
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  color: var(--color-ink);
+}
+
+/* Recado para a Sofia: bloco secundário, separado por um filete dourado. */
+.floo__pending {
+  width: 100%;
+  margin-top: 0.4rem;
+  text-align: left;
+}
+
+.floo__ai {
+  margin: 0.3rem 0 0;
+  max-width: 24rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+/* Chamas: tremor por CSS (0% e 100% = forma natural, o que vale também no
+   movimento reduzido, que encurta as animações para um quadro). */
+.floo-flames__flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: floo-flicker 1.9s ease-in-out infinite;
+}
+
+.floo-flames__flame--a {
+  animation-duration: 1.6s;
+  animation-delay: -0.5s;
+}
+
+.floo-flames__flame--b {
+  animation-duration: 2.1s;
+  animation-delay: -1.1s;
+}
+
+.floo-flames__glow {
+  transform-box: fill-box;
+  transform-origin: 50% 70%;
+  animation: floo-glow 2.6s ease-in-out infinite;
+}
+
+.floo.is-idle .floo-flames__flame,
+.floo.is-idle .floo-flames__glow {
+  animation-play-state: paused;
+}
+
+@keyframes floo-flicker {
+  0%,
+  100% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+  25% {
+    transform: scale(0.96, 1.08) skewX(-3deg);
+  }
+  50% {
+    transform: scale(1.03, 0.94) skewX(2deg);
+  }
+  75% {
+    transform: scale(0.98, 1.05) skewX(-1.5deg);
+  }
+}
+
+@keyframes floo-glow {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.92);
+  }
+}

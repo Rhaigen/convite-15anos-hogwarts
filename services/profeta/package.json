@@ -1,0 +1,13 @@
+{
+  "name": "convite-profeta",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Serviço do Profeta Diário (fotos e vídeos dos convidados), na VPS do convite.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/main.ts"
+  }
+}

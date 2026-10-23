@@ -1,0 +1,270 @@
+/* ==========================================================================
+   CENA DE ABERTURA
+   ========================================================================== */
+.opening {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 5vh, 3.5rem);
+  height: 100vh;
+  height: 100dvh;
+  padding: calc(var(--safe-top) + 4.5rem) max(var(--gutter), var(--safe-right)) calc(var(--safe-bottom) + 2rem)
+    max(var(--gutter), var(--safe-left));
+  overflow: hidden;
+  background:
+    radial-gradient(55% 45% at 50% 55%, rgba(116, 15, 32, 0.28) 0%, rgba(116, 15, 32, 0) 70%),
+    radial-gradient(90% 70% at 50% 52%, #24121a 0%, #140a10 48%, #08050a 100%);
+  isolation: isolate;
+}
+
+/* Raios de luz volumétrica girando lentamente atrás da carta */
+.opening__rays {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: 160vmax;
+  height: 160vmax;
+  margin: -80vmax 0 0 -80vmax;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(246, 217, 138, 0) 0deg 7deg,
+    rgba(246, 217, 138, 0.055) 9deg 10deg,
+    rgba(246, 217, 138, 0) 13deg 22deg
+  );
+  mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 18%, transparent 46%);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 18%, transparent 46%);
+  animation: rays-turn 90s linear infinite;
+  will-change: transform;
+  z-index: -1;
+}
+
+@keyframes rays-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.opening__halo {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: min(130vw, 70rem);
+  aspect-ratio: 1.4;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(246, 217, 138, 0.26), rgba(232, 160, 70, 0.1) 45%, rgba(232, 160, 70, 0) 100%);
+  opacity: 0.55;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.opening__mist {
+  position: absolute;
+  inset: auto -20% -10% -20%;
+  height: 45%;
+  background:
+    radial-gradient(40% 60% at 25% 80%, rgba(203, 191, 174, 0.09), transparent 70%),
+    radial-gradient(45% 55% at 75% 85%, rgba(203, 191, 174, 0.08), transparent 70%);
+  animation: mist-drift 22s ease-in-out infinite alternate;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes mist-drift {
+  from {
+    transform: translate3d(-3%, 0, 0);
+  }
+  to {
+    transform: translate3d(3%, -4%, 0);
+  }
+}
+
+.opening__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+}
+
+.opening__heading h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 1rem + 2.4vw, 2.6rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-cream);
+  text-shadow: 0 0 30px rgba(246, 217, 138, 0.25);
+}
+
+.opening__stage {
+  width: min(88vw, 34rem, calc((100dvh - 17rem) * 1.48));
+  min-width: 15rem;
+  perspective: 1400px;
+}
+
+.opening__envelope-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.opening__envelope-btn:focus-visible {
+  outline-offset: 14px;
+}
+
+.opening__envelope-float,
+.opening__envelope-bob,
+.opening__envelope-tilt,
+.opening__envelope {
+  display: block;
+  will-change: transform;
+}
+
+.opening[data-state='opening'] .envelope__seal-pulse {
+  display: none;
+}
+
+.opening[data-state='ready'] .opening__envelope-btn:hover .envelope__seal-glow {
+  opacity: 0.35;
+  transition: opacity 0.5s var(--ease-soft);
+}
+
+.opening__cues {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.opening__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+  color: var(--color-gold-bright);
+  text-align: center;
+}
+
+.opening__hint-star {
+  width: 0.8rem;
+  height: 0.8rem;
+  color: var(--color-gold);
+  animation: hint-twinkle 2.4s ease-in-out infinite;
+}
+
+.opening__hint-star:last-child {
+  animation-delay: 1.2s;
+}
+
+@keyframes hint-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.opening__sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.4em 1.1em;
+  border: 1px solid rgba(201, 162, 78, 0.35);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  background: rgba(20, 10, 16, 0.45);
+}
+
+.opening__sound svg {
+  flex-shrink: 0;
+  color: var(--color-gold-bright);
+}
+
+.opening__flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 50% at 50% 40%, rgba(255, 244, 214, 0.9), rgba(246, 217, 138, 0.35) 40%, rgba(246, 217, 138, 0) 75%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.opening__fly {
+  position: fixed;
+  display: none;
+  z-index: 3;
+  border-radius: 3px;
+  box-shadow:
+    0 40px 90px -30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(122, 86, 40, 0.25) inset;
+  pointer-events: none;
+}
+
+.opening__fly-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+  padding-top: 5%;
+  container-type: inline-size;
+}
+
+.opening__fly-crest {
+  width: 16%;
+  max-width: 6.5rem;
+  height: auto;
+}
+
+.opening__fly-kicker {
+  font-family: var(--font-display);
+  font-size: clamp(0.5rem, 2.4cqi, 0.92rem);
+  font-weight: 600;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--color-crimson);
+}
+
+/* Telas baixas (celular deitado): prioriza o envelope */
+@media (max-height: 520px) {
+  .opening {
+    gap: 0.9rem;
+    padding-top: calc(var(--safe-top) + 1rem);
+    padding-bottom: calc(var(--safe-bottom) + 0.75rem);
+  }
+  .opening__heading .kicker {
+    display: none;
+  }
+  .opening__heading h2 {
+    font-size: 1.2rem;
+  }
+  .opening__cues {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+  }
+  .opening__stage {
+    width: min(70vw, calc((100dvh - 7.5rem) * 1.48));
+  }
+}

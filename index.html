@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon-sofia-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-sofia-48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/favicon-sofia-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!--app-meta-->
+    <style>
+      /* Fundo imediato, antes do CSS principal, para evitar flash branco. */
+      html { background: #100a12; color-scheme: dark; }
+      body { margin: 0; }
+      .noscript-letter { max-width: 34rem; margin: 10vh auto; padding: 2.5rem 2rem; background: #e9d7b0; color: #291a17;
+        font-family: Georgia, 'Times New Roman', serif; line-height: 1.6; border-radius: 4px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+      .noscript-letter h1 { margin: .25rem 0 1rem; font-size: 2rem; color: #740f20; }
+      .noscript-kicker { letter-spacing: .3em; text-transform: uppercase; font-size: .8rem; color: #740f20; }
+    </style>
+  </head>
+  <body>
+    <noscript><!--app-noscript--></noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

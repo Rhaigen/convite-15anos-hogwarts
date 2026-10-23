@@ -1,0 +1,214 @@
+/* ==========================================================================
+   CAPÍTULO II — A CASA DA CORAGEM
+   ========================================================================== */
+.house {
+  position: relative;
+  min-height: 150vh;
+  min-height: 150svh;
+  padding: clamp(6rem, 18vh, 12rem) 0 clamp(8rem, 22vh, 14rem);
+  overflow: clip;
+  isolation: isolate;
+}
+
+.house__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 40% at 50% 38%, rgba(196, 42, 66, 0.35), rgba(196, 42, 66, 0) 70%),
+    linear-gradient(180deg, #2a0710 0%, #3b0915 28%, #2c0711 62%, rgba(18, 4, 10, 0) 100%);
+}
+
+/* Cortinas de veludo: dobras verticais + trama de tecido */
+.house__drapes {
+  position: absolute;
+  inset: 0;
+  background:
+    var(--fabric-weave),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.26) 0,
+      rgba(255, 210, 200, 0.035) 3.5%,
+      rgba(0, 0, 0, 0.12) 6%,
+      rgba(255, 210, 200, 0.05) 8.5%,
+      rgba(0, 0, 0, 0.26) 12%
+    );
+  background-size:
+    160px 160px,
+    auto;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 55%, transparent 92%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 55%, transparent 92%);
+  opacity: 0.85;
+}
+
+/* Feixes de luz vindos do alto */
+.house__shafts {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, transparent 30%, rgba(246, 217, 138, 0.07) 38%, transparent 46%),
+    linear-gradient(75deg, transparent 52%, rgba(246, 217, 138, 0.06) 59%, transparent 66%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 20%, transparent 70%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%, transparent 70%);
+}
+
+.house__stage {
+  position: relative;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding-inline: max(var(--gutter), var(--safe-left)) max(var(--gutter), var(--safe-right));
+}
+
+.house__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.house__kicker {
+  margin: 0 0 clamp(1.5rem, 4vh, 2.5rem);
+  color: var(--color-gold-bright);
+}
+
+.house__crest-wrap {
+  position: relative;
+  width: clamp(9rem, 26vw, 15rem);
+  margin-bottom: clamp(0.5rem, 2vh, 1.25rem);
+}
+
+.house__crest {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.55));
+}
+
+.house__glow {
+  position: absolute;
+  inset: -45%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(246, 217, 138, 0.38), rgba(232, 160, 70, 0.12) 50%, transparent 100%);
+}
+
+.house__name {
+  margin: 0;
+  font-size: var(--step-hero);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.06em;
+}
+
+.house__name:focus {
+  outline: none;
+}
+
+.house__letters {
+  display: inline-flex;
+  padding-left: 0.06em;
+}
+
+.house__letter {
+  display: inline-block;
+  will-change: transform;
+}
+
+.house__surname {
+  margin: 0.8rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 0.8rem + 1vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  padding-left: 0.42em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+}
+
+.house__tagline {
+  margin: clamp(1.75rem, 5vh, 3rem) 0 0;
+  max-width: 30rem;
+  font-size: var(--step-2);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--color-gold-bright);
+}
+
+.house__virtues {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1.8rem;
+  margin: clamp(1.75rem, 5vh, 3rem) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+}
+
+.house__virtues li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.house__virtue-star {
+  width: 0.7rem;
+  height: 0.7rem;
+  color: var(--color-gold);
+}
+
+/* Estandartes */
+.banner {
+  position: absolute;
+  top: calc(-1 * clamp(6rem, 18vh, 12rem));
+  width: clamp(7rem, 13vw, 12rem);
+  aspect-ratio: 180 / 600;
+  transform-origin: 50% 0;
+  pointer-events: none;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55));
+}
+
+html[data-quality='low'] .banner {
+  filter: none;
+}
+
+.banner--left {
+  left: clamp(-2rem, 4vw, 5rem);
+}
+
+.banner--right {
+  right: clamp(-2rem, 4vw, 5rem);
+}
+
+.banner__cloth {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.banner__crest {
+  position: absolute;
+  left: 22%;
+  width: 56%;
+  top: 30%;
+  height: auto;
+}
+
+@media (max-width: 767px) {
+  .banner {
+    width: 5.5rem;
+    opacity: 0.5;
+  }
+  .banner--left {
+    left: -1.6rem;
+  }
+  .banner--right {
+    right: -1.6rem;
+  }
+}

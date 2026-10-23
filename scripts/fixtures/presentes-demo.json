@@ -1,0 +1,14 @@
+{
+  "_aviso": "Presentes FICTÍCIOS para ver o pergaminho no npm run dev (?presentes=demo) e no e2e. Nunca entram no build publicado. A lista real fica em src/content/gifts.ts.",
+  "gifts": [
+    { "kind": "quota", "id": "varinha", "name": "Uma varinha nova", "description": "Para os primeiros feitiços dos 15 anos.", "icon": "wand", "amount": 150 },
+    { "kind": "quota", "id": "livros-da-saga", "name": "Livros da saga", "description": "Uma coleção para reler sob as cobertas.", "icon": "book", "amount": 220 },
+    { "kind": "quota", "id": "cachecol", "name": "O cachecol da Grifinória", "description": "Vermelho e dourado, para os dias de frio.", "icon": "shirt", "amount": 90 },
+    { "kind": "quota", "id": "camera", "name": "Uma câmera instantânea", "description": "Para guardar as fotos que se movem.", "icon": "camera", "amount": 480 },
+    { "kind": "fund", "id": "viagem", "name": "A viagem dos sonhos", "description": "Uma viagem para conhecer novos castelos.", "icon": "plane", "goal": 5000 },
+    { "kind": "fund", "id": "curso-de-musica", "name": "Aulas de música", "description": "Um semestre de aulas com o instrumento preferido.", "icon": "music", "goal": 1800 },
+    { "kind": "free", "id": "chocolates", "name": "Sapos de chocolate", "description": "Qualquer chocolate serve; os sapos são opcionais.", "icon": "sparkles" },
+    { "kind": "free", "id": "plantas", "name": "Uma planta para o quarto", "description": "De preferência uma que não grite como a mandrágora.", "icon": "feather", "url": "https://loja.example/plantas", "storeName": "Floricultura" }
+  ],
+  "progress": { "viagem": 312000, "curso-de-musica": 45000 }
+}

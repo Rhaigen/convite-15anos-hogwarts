@@ -1,0 +1,19 @@
+{
+  "_aviso": "Cartas FICTÍCIAS para ver o Salão Principal no npm run dev (?salao=selado|aberto|vazio) e no e2e. Nunca entram no build.",
+  "letters": [
+    { "id": "demo-01", "from": "Tio Carlos e Marta", "body": "Sofia, você é a nossa estrela!\n\nQue os seus 15 anos tenham a coragem da Grifinória e a magia que você espalha por onde passa. Com todo o nosso amor." },
+    { "id": "demo-02", "from": "Vovó Lúcia", "body": "Minha netinha querida, parece que foi ontem que eu te segurava no colo. Hoje você é uma moça linda, por dentro e por fora. A vovó te ama muito." },
+    { "id": "demo-03", "from": "Bia", "body": "Feliz 15 anos, prima! Que noite incrível vai ser. Já estou ensaiando a dança!" },
+    { "id": "demo-04", "from": "Pedro", "body": "Parabéns, Sofia! 🎉" },
+    { "id": "demo-05", "from": "Tia Joana", "body": "Que esta nova fase seja cheia de descobertas, amizades verdadeiras e sonhos realizados. Estaremos sempre aqui torcendo por você." },
+    { "id": "demo-06", "from": "Madrinha Helena", "body": "Sofia, ser sua madrinha é um dos maiores presentes da minha vida.\n\nQue você nunca perca esse brilho no olhar, essa risada que contagia todo mundo e essa coragem de ser exatamente quem você é. O mundo é seu, minha querida.\n\nTe amo hoje e sempre." },
+    { "id": "demo-07", "from": "João", "body": "Sofia, que seus 15 anos sejam tão mágicos quanto você. Beijos do tio João!" },
+    { "id": "demo-08", "from": "Luiza", "body": "Amiga, obrigada por cada risada no recreio e por cada segredo guardado. Feliz aniversário! Te adoro." },
+    { "id": "demo-09", "from": "Rafa", "body": "Parabéns! Que venham muitos anos de aventuras." },
+    { "id": "demo-10", "from": "Professora Ana", "body": "Querida Sofia, foi uma alegria ver você crescer em sala de aula. Continue curiosa e generosa. Um abraço carinhoso." },
+    { "id": "demo-11", "from": "Família Andrade", "body": "Com muito carinho, desejamos à Sofia uma noite inesquecível e uma vida cheia de luz." },
+    { "id": "demo-12", "from": "Gui", "body": "Feliz 15! Vai ser a melhor festa do ano." },
+    { "id": "demo-13", "from": "Dinda Cris", "body": "Sofia, minha flor: você chegou trazendo alegria e nunca mais foi embora. Parabéns pelos seus 15 anos!" },
+    { "id": "demo-14", "from": "Vovô Zé", "body": "Para a minha neta mais corajosa: que Deus abençoe cada passo seu. Do vovô que te ama." }
+  ]
+}

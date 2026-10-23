@@ -1,0 +1,253 @@
+/* ==========================================================================
+   ENVELOPE — geometria relativa (proporção 1.48:1). Camadas e z-index:
+   fundo 1 · aba aberta 2 · carta 3 · bolso 4 · aba fechada 5 · selo 6
+   ========================================================================== */
+.envelope {
+  --flap-depth: 57%;
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.48;
+}
+
+.envelope > span {
+  position: absolute;
+  display: block;
+}
+
+.envelope__shadow {
+  left: 6%;
+  right: 6%;
+  bottom: -16%;
+  height: 16%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0) 70%);
+  z-index: 0;
+}
+
+.envelope__back {
+  inset: 0;
+  z-index: 1;
+  border-radius: 3px;
+  background:
+    linear-gradient(180deg, rgba(60, 34, 14, 0.55), rgba(60, 34, 14, 0.12) 45%, rgba(60, 34, 14, 0.3)),
+    #b8986a;
+  box-shadow:
+    0 34px 60px -24px rgba(0, 0, 0, 0.85),
+    0 14px 28px -14px rgba(0, 0, 0, 0.6);
+}
+
+/* Carta dentro do envelope */
+.envelope__letter {
+  left: 5.5%;
+  right: 5.5%;
+  top: 4%;
+  height: 88%;
+  z-index: 3;
+  will-change: transform;
+}
+
+.envelope__letter-paper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4%;
+  padding-top: 5%;
+  border-radius: 2px;
+  box-shadow:
+    0 -6px 18px -8px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(122, 86, 40, 0.25) inset;
+}
+
+.envelope__letter-crest {
+  width: 16%;
+  height: auto;
+}
+
+.envelope__letter-kicker {
+  font-family: var(--font-display);
+  font-size: clamp(0.5rem, 1.6vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--color-crimson);
+}
+
+.envelope__letter-lines {
+  width: 62%;
+  height: 26%;
+  background: repeating-linear-gradient(180deg, rgba(41, 26, 23, 0.16) 0 1px, transparent 1px 14%);
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+
+/* Bolso frontal: formado pelas abas laterais e inferior */
+.envelope__front {
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.envelope__front > * {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.envelope__pocket {
+  clip-path: polygon(0 0, 50% var(--flap-depth), 100% 0, 100% 100%, 0 100%);
+  border-radius: 3px;
+}
+
+.envelope__shade {
+  pointer-events: none;
+}
+
+.envelope__shade--left {
+  clip-path: polygon(0 0, 50% var(--flap-depth), 0 100%);
+  background: linear-gradient(90deg, rgba(96, 62, 26, 0.32), rgba(96, 62, 26, 0.04) 70%);
+}
+
+.envelope__shade--right {
+  clip-path: polygon(100% 0, 50% var(--flap-depth), 100% 100%);
+  background: linear-gradient(270deg, rgba(96, 62, 26, 0.36), rgba(96, 62, 26, 0.05) 70%);
+}
+
+.envelope__shade--bottom {
+  clip-path: polygon(0 100%, 50% var(--flap-depth), 100% 100%);
+  background: linear-gradient(180deg, rgba(70, 40, 14, 0.28) 0%, rgba(255, 248, 228, 0.16) 40%, rgba(255, 248, 228, 0) 100%);
+}
+
+.envelope__folds {
+  width: 100%;
+  height: 100%;
+}
+
+.envelope__address {
+  inset: auto 0 7% 0 !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(0.72rem, 2.3vw, 1.08rem);
+  line-height: 1.25;
+  color: #6b1222;
+  text-align: center;
+}
+
+.envelope__address > span:first-child {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-size: 0.78em;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+/* Aba superior com duas faces (transformação 3D) */
+.envelope__flap {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--flap-depth) + 3%);
+  z-index: 5;
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 5px 6px rgba(48, 24, 6, 0.38));
+}
+
+html[data-quality='low'] .envelope__flap {
+  filter: none;
+}
+
+.envelope__flap-face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.envelope__flap-face--front {
+  border-radius: 3px 3px 0 0;
+}
+
+.envelope__flap-face--front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 249, 230, 0.35), rgba(110, 72, 30, 0.22) 85%);
+}
+
+.envelope__flap-face--back {
+  /* Ponta para cima no recorte: virada pelo rotateX desta face e depois pelo da aba,
+     cobre o mesmo triângulo com a aba fechada e aponta para cima quando ela abre. */
+  clip-path: polygon(0 100%, 100% 100%, 50% 0);
+  transform: rotateX(180deg);
+  background:
+    linear-gradient(0deg, rgba(60, 34, 14, 0.35), rgba(60, 34, 14, 0.05)),
+    #c9a979;
+}
+
+/* Selo de cera */
+.envelope__seal {
+  left: 50%;
+  top: calc(var(--flap-depth) + 1%);
+  width: 21%;
+  aspect-ratio: 1;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+}
+
+.envelope__seal > span {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.envelope__seal-half svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 3px 3px rgba(40, 0, 8, 0.5));
+}
+
+.envelope__seal-half--left {
+  /* Sobrepõe ~1,5% à metade direita para esconder a emenda enquanto o selo está intacto. */
+  clip-path: polygon(-10% -10%, 55.5% -10%, 48.5% 22%, 57.5% 41%, 46.5% 63%, 54.5% 82%, 50.5% 110%, -10% 110%);
+}
+
+.envelope__seal-half--right {
+  clip-path: polygon(54% -10%, 110% -10%, 110% 110%, 49% 110%, 53% 82%, 45% 63%, 56% 41%, 47% 22%);
+}
+
+.envelope__seal-glow {
+  inset: -60% !important;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 238, 190, 0.95) 0%, rgba(246, 217, 138, 0.55) 22%, rgba(232, 160, 70, 0) 62%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope__seal-pulse {
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px rgba(246, 217, 138, 0.75);
+  animation: seal-pulse 2.6s var(--ease-soft) infinite;
+  pointer-events: none;
+}
+
+@keyframes seal-pulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.85;
+  }
+  70%,
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}

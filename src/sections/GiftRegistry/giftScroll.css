@@ -1,0 +1,697 @@
+/* ==========================================================================
+   A LISTA DE PRESENTES (<dialog> em forma de pergaminho)
+   Varetas douradas em cima e embaixo; o papel rola por dentro.
+   Nada de `transition` em opacity/transform: a abertura é do GSAP.
+   ========================================================================== */
+html:has(dialog.gift-dialog[open]) {
+  overflow: hidden;
+}
+
+.gift-dialog {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--color-ink);
+  background: transparent;
+  overscroll-behavior: contain;
+}
+
+.gift-dialog:focus {
+  outline: none;
+}
+
+.gift-dialog::backdrop {
+  background:
+    radial-gradient(60% 50% at 50% 45%, rgba(246, 190, 110, 0.14), transparent 70%),
+    rgba(5, 5, 14, 0.9);
+}
+
+.gift-dialog[open],
+.gift-dialog[open]::backdrop {
+  animation: gift-dialog-fade 0.35s ease-out;
+}
+
+@keyframes gift-dialog-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.gift-dialog__close {
+  position: absolute;
+  top: calc(var(--safe-top) + 1rem);
+  right: max(1rem, var(--safe-right));
+  z-index: 3;
+}
+
+/* O pergaminho tem a altura do conteúdo, até caber na tela; depois o papel rola por dentro. */
+.gift-scroll {
+  --rod-h: 1.35rem;
+  --top: calc(var(--safe-top) + 4.25rem);
+  --bottom: calc(var(--safe-bottom) + 1.25rem);
+  position: absolute;
+  inset: var(--top) 0 var(--bottom);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(46rem, calc(100% - 1.5rem));
+  height: fit-content;
+  max-height: min(58rem, calc(100% - var(--top) - var(--bottom)));
+  margin: auto;
+}
+
+/* Varetas: cilindro dourado com as pontas torneadas. */
+.gift-scroll__rod {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  width: 100%;
+  height: var(--rod-h);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff1c2 0%, #e2bd68 26%, #a87b31 62%, #5c3d12 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 239, 190, 0.35) inset,
+    0 8px 16px -6px rgba(0, 0, 0, 0.85);
+}
+
+.gift-scroll__rod::before,
+.gift-scroll__rod::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: calc(var(--rod-h) * 1.3);
+  height: calc(var(--rod-h) * 1.3);
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff4cc, #c7963d 55%, #5c3d12);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.gift-scroll__rod::before {
+  left: -0.3rem;
+}
+
+.gift-scroll__rod::after {
+  right: -0.3rem;
+}
+
+.gift-scroll__paper {
+  z-index: 1;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: calc(100% - 1.5rem);
+  min-height: 0;
+  margin-block: calc(var(--rod-h) * -0.5);
+  /* Papel claro: campos, caixas e barras de rolagem no tema claro (o site é escuro). */
+  color-scheme: light;
+  box-shadow:
+    0 0 0 1px rgba(122, 86, 40, 0.35) inset,
+    0 40px 90px -30px rgba(0, 0, 0, 0.9),
+    0 0 70px -10px rgba(246, 200, 120, 0.22);
+}
+
+/* Sombra do papel enrolado junto às varetas. */
+.gift-scroll__paper::before,
+.gift-scroll__paper::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 1.6rem;
+  pointer-events: none;
+}
+
+.gift-scroll__paper::before {
+  top: 0;
+  background: linear-gradient(180deg, rgba(92, 61, 18, 0.45), transparent);
+}
+
+.gift-scroll__paper::after {
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(92, 61, 18, 0.45), transparent);
+}
+
+.gift-scroll__body {
+  flex: 1;
+  min-height: 0;
+  padding: clamp(2rem, 5vw, 3rem) clamp(1.1rem, 5vw, 3rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(122, 86, 40, 0.5) transparent;
+}
+
+/* Cabeçalho */
+.gift-scroll__header {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.gift-scroll__kicker {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-crimson);
+}
+
+.gift-scroll__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  line-height: 1.15;
+  color: #4f0b17;
+  outline: none;
+}
+
+.gift-scroll__divider {
+  width: min(13rem, 70%);
+  color: var(--color-gold-deep);
+}
+
+.gift-scroll__intro {
+  margin: 0;
+  max-width: 32rem;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.gift-scroll__demo {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--color-crimson);
+}
+
+.gift-scroll__notice {
+  max-width: 32rem;
+  margin: 1.25rem auto 0;
+}
+
+.gift-scroll__empty {
+  max-width: 26rem;
+  margin: 2rem auto 0;
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+/* Seções da lista */
+.gift-section {
+  margin-top: 2.5rem;
+}
+
+.gift-section__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color-crimson);
+}
+
+.gift-section__hint {
+  margin: 0.35rem 0 0;
+  font-style: italic;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.gift-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12.5rem), 1fr));
+  gap: 1rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gift-grid--wide {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+}
+
+.gift-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 1.25rem 1rem 1.1rem;
+  border-radius: 4px;
+  text-align: center;
+  background: rgba(255, 250, 235, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(158, 122, 51, 0.45) inset,
+    0 12px 22px -18px rgba(60, 30, 10, 0.7);
+}
+
+.gift-card__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 50%;
+  color: var(--color-gold-bright);
+  background: radial-gradient(circle at 35% 30%, #a3192f, #5b0b18);
+  box-shadow:
+    0 0 0 2px rgba(216, 177, 90, 0.7),
+    0 6px 14px -6px rgba(56, 7, 17, 0.9);
+}
+
+/* Foto do presente: quadro branco com filete dourado (as fotos vêm com fundo branco). */
+.gift-photo {
+  display: block;
+  flex: none;
+  width: min(100%, 8.5rem);
+  aspect-ratio: 1;
+  padding: 0.3rem;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(158, 122, 51, 0.65),
+    0 0 0 4px rgba(255, 250, 235, 0.6),
+    0 0 0 5px rgba(158, 122, 51, 0.35),
+    0 10px 18px -12px rgba(60, 30, 10, 0.8);
+}
+
+.gift-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  object-fit: contain;
+}
+
+.gift-photo--large {
+  width: min(70%, 13rem);
+}
+
+.gift-card__name {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #4f0b17;
+}
+
+.gift-card__desc {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  color: var(--color-ink-soft);
+}
+
+.gift-card__price {
+  margin: auto 0 0;
+  padding-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+
+.gift-card__cta {
+  width: 100%;
+  min-height: 2.6rem;
+  margin-top: 0.35rem;
+  font-size: 0.68rem;
+}
+
+/* Vaquinha: barra de "magia acumulada" */
+.gift-fund {
+  display: grid;
+  gap: 0.4rem;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 0.35rem;
+}
+
+.gift-fund__bar {
+  height: 0.7rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(122, 86, 40, 0.18);
+  box-shadow: inset 0 1px 2px rgba(60, 30, 10, 0.35);
+}
+
+.gift-fund__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8d1527, #d8b15a);
+  box-shadow: 0 0 10px rgba(246, 217, 138, 0.6);
+}
+
+.gift-fund__text {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-soft);
+}
+
+/* Sugestões livres */
+.gift-free {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gift-free__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  padding: 0.9rem 1rem;
+  border-radius: 4px;
+  background: rgba(255, 250, 235, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(158, 122, 51, 0.35);
+}
+
+.gift-free__item .gift-card__icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.gift-free__item .gift-card__name {
+  margin-top: 0;
+}
+
+.gift-free__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-crimson);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Voltar / fechar (botão de texto no papel) */
+.gift-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.2rem;
+  border: 0;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-crimson);
+  background: none;
+}
+
+.gift-back:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Formulário do presente */
+.gift-form {
+  position: relative;
+  display: grid;
+  gap: 1.15rem;
+  max-width: 30rem;
+  margin: 1.5rem auto 0;
+}
+
+.gift-form__summary {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  text-align: center;
+}
+
+.gift-form__field {
+  display: grid;
+  gap: 0.35rem;
+  width: 100%;
+  text-align: left;
+}
+
+.gift-form__field > label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.gift-form__money {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.gift-form__money input,
+.gift-form textarea,
+.gift-form__signature {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  border-radius: 3px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--color-ink);
+  background: rgba(255, 252, 242, 0.78);
+  box-shadow: inset 0 0 0 1px rgba(122, 86, 40, 0.5);
+}
+
+.gift-form textarea {
+  resize: vertical;
+  min-height: 7.5rem;
+}
+
+.gift-form__money input:focus-visible,
+.gift-form textarea:focus-visible,
+.gift-form__signature:focus-visible {
+  outline: 2px solid var(--color-gold-deep);
+  outline-offset: 2px;
+}
+
+.gift-form [aria-invalid='true'] {
+  box-shadow: inset 0 0 0 2px var(--color-crimson);
+}
+
+.gift-form__signature:disabled {
+  opacity: 0.5;
+}
+
+.gift-form__price {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #4f0b17;
+}
+
+.gift-form__check,
+.gift-form__radio {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.gift-form__check input,
+.gift-form__radio input {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--color-crimson);
+}
+
+.gift-form__message {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.gift-form__sign {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.gift-form__hint {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.gift-form__count {
+  text-align: right;
+}
+
+.gift-form__error {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-crimson);
+}
+
+/* Campo-isca: fora da tela (não é display:none, que alguns robôs reconhecem). */
+.gift-form__hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.gift-form__note {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+/* Dois botões de pagamento, lado a lado (empilhados em telas estreitas), cada um com o total. */
+.gift-pay {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.gift-pay__title {
+  padding: 0;
+  margin: 0 auto 0.15rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.gift-pay__options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.gift-pay__btn {
+  flex-direction: column;
+  gap: 0.3rem;
+  min-height: 6rem;
+  padding: 0.9rem 0.8rem;
+}
+
+.gift-pay__label {
+  text-align: center;
+}
+
+.gift-pay__total {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+}
+
+.gift-pay__btn:disabled {
+  cursor: progress;
+  opacity: 0.75;
+}
+
+.gift-pay__note {
+  text-align: center;
+}
+
+@media (max-width: 22rem) {
+  .gift-pay__options {
+    grid-template-columns: 1fr;
+  }
+
+  .gift-pay__btn {
+    min-height: 4.5rem;
+  }
+}
+
+.gift-form__spin {
+  animation: gift-spin 1s linear infinite;
+}
+
+@keyframes gift-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.gift-form__status {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-crimson);
+}
+
+/* Agradecimento */
+.gift-thanks {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  padding-block: 1rem;
+  text-align: center;
+}
+
+.gift-thanks__seal {
+  width: 5.5rem;
+  filter: drop-shadow(0 6px 8px rgba(40, 0, 8, 0.5));
+}
+
+.gift-thanks__text {
+  max-width: 28rem;
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.gift-thanks__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.gift-section .vault {
+  margin-top: 0.25rem;
+}

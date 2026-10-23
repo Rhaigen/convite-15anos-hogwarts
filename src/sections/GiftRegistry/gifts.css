@@ -1,0 +1,239 @@
+/* ==========================================================================
+   CAPÍTULO VIII — O COFRE DOS PRESENTES
+   ========================================================================== */
+/* Luz dourada (GIFTS_LIGHT = 'gold' em ambient.ts): halo atrás do pergaminho enrolado. */
+.gifts--gold {
+  background: radial-gradient(60% 45% at 50% 66%, rgba(214, 168, 72, 0.22), transparent 75%);
+}
+
+/* Convite: um pergaminho enrolado, com fita e selo; a lista abre num <dialog> (giftScroll.css). */
+.gifts__invite {
+  display: grid;
+  justify-items: center;
+  gap: 1.6rem;
+  max-width: 34rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.gifts__rolled {
+  position: relative;
+  width: min(20rem, 78vw);
+  height: clamp(5.75rem, 24vw, 7.25rem);
+  rotate: -3deg;
+  filter: drop-shadow(0 22px 26px rgba(0, 0, 0, 0.6));
+}
+
+.gifts__rolled > span {
+  position: absolute;
+  display: block;
+}
+
+/* O rolo de papel: o degradê vertical dá o volume do cilindro. */
+.gifts__paper {
+  inset: 26% 6%;
+  border-radius: 7px;
+  background:
+    var(--paper-grain),
+    linear-gradient(180deg, #7b5a30 0%, #c9ab73 14%, #f4e6c4 40%, #e9d7b0 60%, #b08c57 86%, #6e4f28 100%);
+  background-size: 220px 220px, auto;
+}
+
+/* Pontas douradas das varetas. */
+.gifts__rod {
+  top: 16%;
+  bottom: 16%;
+  width: 7.5%;
+  border-radius: 45% / 18%;
+  background: linear-gradient(90deg, #5c3d12 0%, #c7963d 30%, #fff1c2 48%, #b48a3a 70%, #4a3010 100%);
+  box-shadow: 0 0 0 1px rgba(255, 239, 190, 0.35) inset;
+}
+
+.gifts__rod:nth-child(1) {
+  left: 0;
+}
+
+.gifts__rod:nth-child(3) {
+  right: 0;
+}
+
+.gifts__ribbon {
+  top: 20%;
+  bottom: 20%;
+  left: 50%;
+  width: 9%;
+  translate: -50% 0;
+  background: linear-gradient(90deg, #4d0712, #a3192f 50%, #4d0712);
+  box-shadow: 0 0 0 1px rgba(30, 0, 6, 0.35) inset;
+}
+
+.gifts__seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(4rem, 17vw, 5rem);
+  translate: -50% -50%;
+  filter: drop-shadow(0 4px 6px rgba(40, 0, 8, 0.6));
+}
+
+.gifts__invite-text {
+  margin: 0;
+  max-width: 26rem;
+  font-size: var(--step-0);
+  line-height: 1.55;
+  color: var(--color-cream);
+}
+
+/* Cofre Pix (Pix direto da família; dentro do pergaminho, versão compacta) */
+.vault {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+  padding: clamp(2rem, 5vw, 3rem) clamp(1.25rem, 5vw, 2.75rem);
+  border-radius: 4px;
+  text-align: center;
+  background:
+    radial-gradient(90% 60% at 50% 0%, rgba(163, 25, 47, 0.35), transparent 70%),
+    linear-gradient(180deg, #1f0d14, #120709);
+  box-shadow:
+    inset 0 0 0 1px rgba(216, 177, 90, 0.55),
+    inset 0 0 0 6px rgba(18, 7, 9, 0.9),
+    inset 0 0 0 7px rgba(216, 177, 90, 0.25),
+    0 40px 80px -30px rgba(0, 0, 0, 0.95);
+}
+
+.vault__door {
+  width: clamp(6rem, 18vw, 8rem);
+  height: auto;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+}
+
+.vault__body {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  width: 100%;
+}
+
+.vault__title {
+  margin: 0;
+  font-size: var(--step-2);
+  color: var(--color-gold-bright);
+}
+
+.vault__intro,
+.vault__pending {
+  margin: 0;
+  max-width: 26rem;
+  font-size: 1.15rem;
+  color: var(--color-cream);
+}
+
+.vault__pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-style: italic;
+  color: var(--color-mist);
+}
+
+.vault__data {
+  display: grid;
+  gap: 0.8rem;
+  width: 100%;
+  margin: 0.25rem 0;
+}
+
+.vault__data dt {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.vault__data dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-cream);
+}
+
+.vault__key {
+  padding: 0.7rem 0.9rem;
+  border-radius: 3px;
+  font-variant-numeric: tabular-nums;
+  word-break: break-all;
+  user-select: all;
+  background: rgba(248, 240, 226, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(216, 177, 90, 0.4);
+}
+
+.vault__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.vault__feedback {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-gold-bright);
+}
+
+.vault__qr {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.vault__qr img {
+  width: 11.25rem;
+  height: 11.25rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background: #fffaf0;
+}
+
+.vault__qr figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--color-mist);
+}
+
+.vault--scroll {
+  gap: 1.1rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1rem, 4vw, 2rem);
+}
+
+.vault--scroll .vault__door {
+  width: clamp(4.5rem, 14vw, 5.5rem);
+}
+
+.vault--scroll .vault__title {
+  font-size: var(--step-1);
+}
+
+.vault__note {
+  margin: 0;
+  max-width: 26rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--color-mist);
+}
+
+.vault__note a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-gold-bright);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

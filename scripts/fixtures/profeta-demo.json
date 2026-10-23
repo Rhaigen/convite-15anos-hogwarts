@@ -1,0 +1,161 @@
+{
+  "_aviso": "Edição FICTÍCIA da demonstração (?profeta=demo, só no npm run dev) e do e2e: fotos da galeria do convite.",
+  "itens": [
+    {
+      "n": 13,
+      "tipo": "foto",
+      "autor": "Tia Marta",
+      "legenda": "A entrada da aniversariante!",
+      "w": 1920,
+      "h": 1280,
+      "mini": "/fotos/fotografia1-640.webp",
+      "grande": "/fotos/fotografia1-1280.webp",
+      "video": null,
+      "em": "2027-02-20T20:00:00-03:00"
+    },
+    {
+      "n": 12,
+      "tipo": "foto",
+      "autor": "João",
+      "legenda": null,
+      "w": 842,
+      "h": 1264,
+      "mini": "/fotos/fotografia2-640.webp",
+      "grande": "/fotos/fotografia2-842.webp",
+      "video": null,
+      "em": "2027-02-20T20:07:00-03:00"
+    },
+    {
+      "n": 11,
+      "tipo": "foto",
+      "autor": "Vovó Lúcia",
+      "legenda": "Valsa com o papai",
+      "w": 1920,
+      "h": 2880,
+      "mini": "/fotos/fotografia3-640.webp",
+      "grande": "/fotos/fotografia3-1280.webp",
+      "video": null,
+      "em": "2027-02-20T20:14:00-03:00"
+    },
+    {
+      "n": 10,
+      "tipo": "foto",
+      "autor": null,
+      "legenda": null,
+      "w": 1920,
+      "h": 2879,
+      "mini": "/fotos/fotografia4-640.webp",
+      "grande": "/fotos/fotografia4-1280.webp",
+      "video": null,
+      "em": "2027-02-20T20:21:00-03:00"
+    },
+    {
+      "n": 9,
+      "tipo": "foto",
+      "autor": "Helena",
+      "legenda": "Brinde na mesa 7",
+      "w": 1920,
+      "h": 2880,
+      "mini": "/fotos/fotografia5-640.webp",
+      "grande": "/fotos/fotografia5-1280.webp",
+      "video": null,
+      "em": "2027-02-20T20:28:00-03:00"
+    },
+    {
+      "n": 8,
+      "tipo": "foto",
+      "autor": "Pedro Henrique",
+      "legenda": "Pista cheia",
+      "w": 1920,
+      "h": 1280,
+      "mini": "/fotos/fotografia6-640.webp",
+      "grande": "/fotos/fotografia6-1280.webp",
+      "video": null,
+      "em": "2027-02-20T20:35:00-03:00"
+    },
+    {
+      "n": 7,
+      "tipo": "foto",
+      "autor": "Dinda Carla",
+      "legenda": null,
+      "w": 1920,
+      "h": 2880,
+      "mini": "/fotos/fotografia7-640.webp",
+      "grande": "/fotos/fotografia7-1280.webp",
+      "video": null,
+      "em": "2027-02-20T21:42:00-03:00"
+    },
+    {
+      "n": 6,
+      "tipo": "foto",
+      "autor": "Tio Carlos",
+      "legenda": "Que vestido!",
+      "w": 1920,
+      "h": 2880,
+      "mini": "/fotos/fotografia8-640.webp",
+      "grande": "/fotos/fotografia8-1280.webp",
+      "video": null,
+      "em": "2027-02-20T21:49:00-03:00"
+    },
+    {
+      "n": 5,
+      "tipo": "foto",
+      "autor": null,
+      "legenda": null,
+      "w": 1920,
+      "h": 1280,
+      "mini": "/fotos/fotografia9-640.webp",
+      "grande": "/fotos/fotografia9-1280.webp",
+      "video": null,
+      "em": "2027-02-20T21:56:00-03:00"
+    },
+    {
+      "n": 4,
+      "tipo": "foto",
+      "autor": "Bia",
+      "legenda": "Selfie com a Sofia",
+      "w": 1920,
+      "h": 2882,
+      "mini": "/fotos/fotografia10-640.webp",
+      "grande": "/fotos/fotografia10-1280.webp",
+      "video": null,
+      "em": "2027-02-20T21:03:00-03:00"
+    },
+    {
+      "n": 3,
+      "tipo": "foto",
+      "autor": "Rafael",
+      "legenda": null,
+      "w": 1920,
+      "h": 2879,
+      "mini": "/fotos/fotografia11-640.webp",
+      "grande": "/fotos/fotografia11-1280.webp",
+      "video": null,
+      "em": "2027-02-20T21:10:00-03:00"
+    },
+    {
+      "n": 2,
+      "tipo": "foto",
+      "autor": "Ana Clara",
+      "legenda": "Os bolos chegaram",
+      "w": 1920,
+      "h": 2880,
+      "mini": "/fotos/fotografia12-640.webp",
+      "grande": "/fotos/fotografia12-1280.webp",
+      "video": null,
+      "em": "2027-02-20T21:17:00-03:00"
+    },
+    {
+      "n": 1,
+      "tipo": "foto",
+      "autor": "Prof. Lupin (o primo)",
+      "legenda": null,
+      "w": 2752,
+      "h": 1536,
+      "mini": "/fotos/fotografia13-640.webp",
+      "grande": "/fotos/fotografia13-1280.webp",
+      "video": null,
+      "em": "2027-02-20T22:24:00-03:00"
+    }
+  ]
+}

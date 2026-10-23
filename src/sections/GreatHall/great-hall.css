@@ -1,0 +1,718 @@
+/* ==========================================================================
+   CAPÍTULO IX — O SALÃO PRINCIPAL
+   Cartas flutuando sob o teto encantado. Camadas de cada carta (um dono por `transform`):
+   .hall-letter (parallax, GSAP) › __arrive (chegada, GSAP) › __float (flutuação, CSS) › __env
+   (foco: propriedades `translate`/`scale`; tremor da carta selada: GSAP).
+   ========================================================================== */
+.hall {
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* Teto encantado: céu noturno com estrelas que cintilam. */
+.hall__sky {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Azul profundo do teto encantado */
+  background:
+    radial-gradient(90% 60% at 50% 10%, rgba(28, 62, 186, 0.42), transparent 72%),
+    radial-gradient(60% 45% at 18% 40%, rgba(20, 44, 140, 0.26), transparent 70%),
+    radial-gradient(60% 45% at 84% 30%, rgba(24, 70, 170, 0.24), transparent 70%),
+    radial-gradient(80% 50% at 50% 85%, rgba(12, 30, 110, 0.3), transparent 75%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%);
+}
+
+.hall__stars {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  animation: hall-twinkle 7s ease-in-out infinite alternate;
+}
+
+.hall__stars--far {
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255, 255, 255, 0.85) 50%, transparent 51%),
+    radial-gradient(1px 1px at 27% 41%, rgba(255, 244, 220, 0.7) 50%, transparent 51%),
+    radial-gradient(1px 1px at 46% 8%, rgba(255, 255, 255, 0.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 63% 33%, rgba(220, 230, 255, 0.75) 50%, transparent 51%),
+    radial-gradient(1px 1px at 81% 17%, rgba(255, 255, 255, 0.7) 50%, transparent 51%),
+    radial-gradient(1px 1px at 92% 58%, rgba(255, 244, 220, 0.6) 50%, transparent 51%),
+    radial-gradient(1px 1px at 15% 73%, rgba(255, 255, 255, 0.6) 50%, transparent 51%),
+    radial-gradient(1px 1px at 38% 88%, rgba(220, 230, 255, 0.6) 50%, transparent 51%),
+    radial-gradient(1px 1px at 71% 79%, rgba(255, 255, 255, 0.55) 50%, transparent 51%);
+  background-size: 380px 380px;
+  opacity: 0.7;
+}
+
+.hall__stars--near {
+  background-image:
+    radial-gradient(1.6px 1.6px at 18% 26%, rgba(255, 248, 230, 0.95) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 57% 14%, rgba(255, 255, 255, 0.9) 50%, transparent 51%),
+    radial-gradient(1.8px 1.8px at 84% 44%, rgba(255, 236, 200, 0.9) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 34% 67%, rgba(230, 236, 255, 0.85) 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 73% 86%, rgba(255, 255, 255, 0.85) 50%, transparent 51%);
+  background-size: 640px 640px;
+  animation-duration: 4.5s;
+  animation-delay: -2s;
+}
+
+/* Camada intermediária: um pouco mais de estrelas, cintilando em outro ritmo */
+.hall__stars--mid {
+  background-image:
+    radial-gradient(1.2px 1.2px at 6% 34%, rgba(255, 255, 255, 0.85) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 22% 9%, rgba(220, 232, 255, 0.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 31% 56%, rgba(255, 248, 230, 0.75) 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 49% 27%, rgba(255, 255, 255, 0.85) 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 71%, rgba(220, 232, 255, 0.7) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 69% 4%, rgba(255, 255, 255, 0.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 77% 49%, rgba(255, 244, 220, 0.75) 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 88% 83%, rgba(255, 255, 255, 0.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 95% 22%, rgba(220, 232, 255, 0.7) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 13% 91%, rgba(255, 255, 255, 0.75) 50%, transparent 51%);
+  background-size: 520px 520px;
+  background-position: 130px 60px;
+  animation-duration: 5.5s;
+  animation-delay: -3s;
+}
+
+@keyframes hall-twinkle {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+
+/* Contagem e aviso do selo */
+.hall__status {
+  max-width: 38rem;
+  margin: 0 auto clamp(1.5rem, 4vh, 2.5rem);
+  text-align: center;
+}
+
+.hall__count {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.15rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-bright);
+}
+
+.hall__note {
+  margin: 0.55rem 0 0;
+  font-style: italic;
+  font-size: var(--step-0, 1.05rem);
+  color: var(--color-mist);
+}
+
+/* Campo de cartas: a altura vem do layout (fileiras), o tamanho da carta da largura da coluna. */
+.hall__field {
+  /* Cartas pequenas (cabem ~80 sem virar um muro); ao passar o mouse ou focar, crescem para ler o nome. */
+  --lw: min(7.5rem, calc(var(--colw, 120px) * 0.72));
+  /* O envelope (2/3 de --lw) ocupa ~62% da fileira: as cartas flutuam com folga (o layout garante ≤ 84%). */
+  --row: calc(var(--lw) * 1.08);
+  position: relative;
+  max-width: 72rem;
+  height: calc(var(--rows, 0) * var(--row));
+  margin-inline: auto;
+}
+
+/* ---------- Carta ---------- */
+.hall-letter {
+  position: absolute;
+  left: var(--x);
+  top: calc(var(--y) * var(--row));
+  z-index: 2;
+  width: var(--lw);
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  translate: -50% 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hall-letter--d0 {
+  z-index: 1;
+}
+
+.hall-letter--d2 {
+  z-index: 3;
+}
+
+.hall-letter:focus-visible {
+  outline: none;
+}
+
+.hall-letter__arrive,
+.hall-letter__float {
+  position: relative;
+  display: block;
+}
+
+.hall-letter__float {
+  transform: rotate(var(--rot));
+  transform-origin: 50% 50%;
+  animation: hall-float var(--dur, 6s) ease-in-out var(--delay, 0s) infinite;
+}
+
+.hall-letter--d0 .hall-letter__float {
+  scale: 0.84;
+  filter: brightness(0.88);
+}
+
+.hall-letter--d2 .hall-letter__float {
+  scale: 1.07;
+}
+
+@keyframes hall-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot));
+  }
+  50% {
+    transform: translateY(-8px) rotate(calc(var(--rot) * -0.35));
+  }
+}
+
+/* Vela */
+/* Brilho quente atrás do envelope (foco, toque, cartas por ler) */
+.hall-letter__halo {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: -25%;
+  height: calc(var(--lw) * 1.1);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 200, 120, 0.38), transparent);
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-soft);
+  pointer-events: none;
+}
+
+/* Envelope de pergaminho */
+.hall-letter__env {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 3px;
+  background: radial-gradient(130% 120% at 30% 20%, #f7ead0 0%, #e8d3a8 55%, #cfb17e 100%);
+  box-shadow:
+    0 0 0 1px rgba(122, 86, 40, 0.35) inset,
+    0 16px 26px -12px rgba(0, 0, 0, 0.8);
+  transition:
+    translate 0.45s var(--ease-magic),
+    scale 0.45s var(--ease-magic),
+    box-shadow 0.45s var(--ease-soft);
+}
+
+/* Dobras de baixo (dos cantos até o meio) */
+.hall-letter__env::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(to top right, transparent calc(50% - 1px), rgba(122, 86, 40, 0.3) 50%, transparent calc(50% + 1px)) left bottom / 50% 55% no-repeat,
+    linear-gradient(to top left, transparent calc(50% - 1px), rgba(122, 86, 40, 0.3) 50%, transparent calc(50% + 1px)) right bottom / 50% 55% no-repeat;
+}
+
+.hall-letter__flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56%;
+  background: linear-gradient(180deg, #f1e3c4 0%, #dcc394 82%, #c4a26c 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.hall-letter__seal {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: 30%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.hall-seal,
+.hall-seal-half {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 2px rgba(40, 0, 8, 0.55));
+}
+
+/* Selo partido (carta já lida): duas metades afastadas */
+.hall-seal-half--l {
+  clip-path: polygon(0 0, 54% 0, 44% 38%, 56% 62%, 46% 100%, 0 100%);
+  translate: -3px 1px;
+  rotate: -10deg;
+}
+
+.hall-seal-half--r {
+  clip-path: polygon(54% 0, 100% 0, 100% 100%, 46% 100%, 56% 62%, 44% 38%);
+  translate: 3px 2px;
+  rotate: 9deg;
+}
+
+.hall-letter__from {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 6%;
+  overflow: hidden;
+  font-family: var(--font-script);
+  font-size: calc(var(--lw) * 0.115);
+  line-height: 1.2;
+  color: var(--color-ink);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hall-letter__from small {
+  font-family: var(--font-serif);
+  font-size: 0.62em;
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+/* Mouse e foco: a carta cresce à frente das outras (para ler de quem é) e se aquece à luz da vela */
+@media (hover: hover) {
+  .hall-letter:hover {
+    z-index: 6;
+  }
+
+  .hall-letter:hover .hall-letter__env {
+    translate: 0 -4px;
+    scale: 1.4;
+  }
+
+  .hall-letter:hover .hall-letter__halo {
+    opacity: 1;
+  }
+}
+
+.hall-letter:focus-visible {
+  z-index: 6;
+}
+
+.hall-letter:focus-visible .hall-letter__env {
+  translate: 0 -4px;
+  scale: 1.4;
+  box-shadow:
+    0 0 0 1px rgba(122, 86, 40, 0.35) inset,
+    0 0 0 2px var(--color-gold-bright),
+    0 16px 26px -12px rgba(0, 0, 0, 0.8);
+}
+
+.hall-letter:focus-visible .hall-letter__halo {
+  opacity: 1;
+}
+
+.hall-letter:active .hall-letter__env {
+  scale: 0.97;
+}
+
+/* Depois da festa: cartas ainda não lidas chamam com um brilho que respira */
+.hall:not(.is-sealed) .hall-letter:not(.is-read) .hall-letter__halo {
+  opacity: 0.6;
+  animation: hall-breathe 3.2s ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+@keyframes hall-breathe {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Selada: o selo pulsa em dourado ao toque */
+.hall-letter.is-pulsing .hall-letter__seal {
+  animation: hall-seal-pulse 0.9s ease-out;
+}
+
+@keyframes hall-seal-pulse {
+  35% {
+    filter: drop-shadow(0 0 10px rgba(246, 217, 138, 0.95)) brightness(1.3);
+  }
+}
+
+/* Loops só com o capítulo na tela */
+.hall.is-idle .hall__stars,
+.hall.is-idle .hall-letter__float,
+.hall.is-idle .hall-letter__halo {
+  animation-play-state: paused;
+}
+
+/* Aviso ao tocar numa carta selada */
+.hall__notice {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 1.25rem);
+  z-index: 40;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  margin: 0;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.hall__notice span {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  font-style: italic;
+  color: var(--color-cream);
+  text-align: center;
+  background: rgba(14, 12, 28, 0.92);
+  box-shadow:
+    0 0 0 1px rgba(216, 177, 90, 0.45),
+    0 12px 30px -10px rgba(0, 0, 0, 0.8);
+  animation: hall-toast 4.2s ease-in-out forwards;
+}
+
+@keyframes hall-toast {
+  0% {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  8%,
+  85% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Convite para escrever */
+.hall__cta {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  max-width: 34rem;
+  margin: clamp(2.5rem, 7vh, 4rem) auto 0;
+  padding: 1.75rem clamp(1.25rem, 4vw, 2rem);
+  border-radius: 6px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(22, 20, 44, 0.6), rgba(12, 10, 24, 0.35));
+  box-shadow: 0 0 0 1px rgba(216, 177, 90, 0.28) inset;
+}
+
+.hall__cta-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--color-gold-bright);
+}
+
+.hall__cta-text {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--color-mist);
+}
+
+/* ==========================================================================
+   CARTA ABERTA (<dialog>)
+   ========================================================================== */
+html:has(dialog.hall-dialog[open]) {
+  overflow: hidden;
+}
+
+.hall-dialog {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--color-cream);
+  background: transparent;
+  overscroll-behavior: contain;
+}
+
+.hall-dialog:focus {
+  outline: none;
+}
+
+.hall-dialog::backdrop {
+  background:
+    radial-gradient(60% 50% at 50% 45%, rgba(246, 190, 110, 0.14), transparent 70%),
+    rgba(5, 5, 14, 0.9);
+}
+
+.hall-dialog[open],
+.hall-dialog[open]::backdrop {
+  animation: hall-dialog-fade 0.35s ease-out;
+}
+
+@keyframes hall-dialog-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.hall-dialog__scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: calc(var(--safe-top) + 4.5rem) max(1rem, var(--safe-right)) calc(var(--safe-bottom) + 4.5rem) max(1rem, var(--safe-left));
+  touch-action: pan-y pinch-zoom;
+}
+
+/* Envelope da abertura (só visível durante a coreografia) */
+.hall-open {
+  --ow: min(24rem, 78vw);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: var(--ow);
+  height: calc(var(--ow) * 0.6667);
+  margin: auto;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hall-open > span {
+  position: absolute;
+  display: block;
+}
+
+.hall-open__back {
+  inset: 0;
+  z-index: 1;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #c9aa78, #b08c57);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.85);
+}
+
+.hall-open__paper {
+  top: 8%;
+  left: 7%;
+  right: 7%;
+  z-index: 2;
+  height: 84%;
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 14px, rgba(122, 86, 40, 0.12) 14px 15px),
+    var(--color-parchment);
+  box-shadow: 0 0 0 1px rgba(122, 86, 40, 0.25) inset;
+}
+
+.hall-open__pocket {
+  inset: 0;
+  z-index: 3;
+  border-radius: 4px;
+  background: radial-gradient(130% 120% at 30% 20%, #f7ead0 0%, #e8d3a8 55%, #cfb17e 100%);
+  clip-path: polygon(0 30%, 50% 62%, 100% 30%, 100% 100%, 0 100%);
+}
+
+.hall-open__flap {
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  height: 58%;
+  background: linear-gradient(180deg, #f1e3c4 0%, #dcc394 82%, #c4a26c 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0;
+}
+
+.hall-open__seal {
+  top: 58%;
+  left: 50%;
+  z-index: 5;
+  width: 26%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.hall-open__half {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 3px 3px rgba(40, 0, 8, 0.6));
+}
+
+.hall-open__half--l {
+  clip-path: polygon(0 0, 54% 0, 44% 38%, 56% 62%, 46% 100%, 0 100%);
+}
+
+.hall-open__half--r {
+  clip-path: polygon(54% 0, 100% 0, 100% 100%, 46% 100%, 56% 62%, 44% 38%);
+}
+
+.hall-open__spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbe8 0%, #f6d98a 45%, rgba(246, 217, 138, 0) 72%);
+  opacity: 0;
+}
+
+/* A carta */
+.hall-sheet {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: min(32rem, 100%);
+  min-height: min(26rem, 100%);
+  max-height: 100%;
+  border-radius: 3px;
+  outline: none;
+  box-shadow:
+    0 0 0 1px rgba(122, 86, 40, 0.35) inset,
+    0 40px 90px -30px rgba(0, 0, 0, 0.9),
+    0 0 70px -10px rgba(246, 200, 120, 0.28);
+}
+
+.hall-sheet--swap {
+  animation: hall-swap 0.45s var(--ease-magic);
+}
+
+@keyframes hall-swap {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+
+.hall-sheet__creases {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0.35;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent calc(33.3% - 8px),
+    rgba(122, 86, 40, 0.18) 33.3%,
+    rgba(255, 250, 235, 0.3) calc(33.3% + 1px),
+    transparent calc(33.3% + 8px),
+    transparent calc(66.6% - 8px),
+    rgba(122, 86, 40, 0.18) 66.6%,
+    rgba(255, 250, 235, 0.3) calc(66.6% + 1px),
+    transparent calc(66.6% + 8px)
+  );
+}
+
+.hall-sheet__scroll {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100svh - 9rem - var(--safe-top) - var(--safe-bottom));
+  padding: clamp(1.75rem, 5vw, 3rem) clamp(1.5rem, 6vw, 3.25rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.hall-sheet__to {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-crimson);
+}
+
+.hall-sheet__para {
+  margin: 0 0 1em;
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
+  line-height: 1.55;
+  color: var(--color-ink);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.hall-sheet__sign {
+  display: grid;
+  justify-items: end;
+  gap: 0.15rem;
+  margin: auto 0 0;
+  padding-top: 1.5rem;
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+.hall-sheet__from {
+  font-family: var(--font-script);
+  font-size: clamp(1.7rem, 1.3rem + 1.5vw, 2.3rem);
+  font-style: normal;
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.hall-dialog__counter {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 1.4rem);
+  margin: 0;
+  translate: -50% 0;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  color: var(--color-gold-bright);
+}
+
+.hall-dialog__close {
+  position: absolute;
+  top: calc(var(--safe-top) + 1rem);
+  right: max(1rem, var(--safe-right));
+}
+
+.hall-dialog__nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.hall-dialog__nav--prev {
+  left: max(0.75rem, var(--safe-left));
+}
+
+.hall-dialog__nav--next {
+  right: max(0.75rem, var(--safe-right));
+}
+
+/* Celular: setas embaixo, ao lado do contador, para não cobrirem a carta */
+@media (max-width: 699px) {
+  .hall-dialog__nav {
+    top: auto;
+    bottom: calc(var(--safe-bottom) + 0.6rem);
+    translate: none;
+  }
+
+  .hall-dialog__nav--prev {
+    left: max(1.5rem, var(--safe-left));
+  }
+
+  .hall-dialog__nav--next {
+    right: max(1.5rem, var(--safe-right));
+  }
+}

@@ -1,0 +1,46 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+coverage
+test-results
+artifacts
+*.log
+.DS_Store
+Thumbs.db
+
+# Fotografias originais (alta resolução) — publique apenas as versões otimizadas em public/fotos
+fotos-originais/*
+!fotos-originais/LEIA-ME.md
+
+# Imagens originais dos presentes (podem ser fotos de lojas, com dono): ficam só na máquina local
+presentes-originais/*
+!presentes-originais/LEIA-ME.md
+src/assets/presentes/
+public/presentes/
+
+# Supabase CLI local
+supabase/.branches
+supabase/.temp
+
+# Música ambiente (obra protegida por direitos autorais): fica só na máquina local, entra no build
+public/audio/
+
+# Configuração local do MCP do Claude Code (aponta para o projeto Supabase)
+.mcp.json
+
+# Recados para a Sofia exportados do banco (dados pessoais): npm run messages:book
+recados/
+
+# Lista real de convidados (dados pessoais, LGPD): nunca versionar. Modelo em docs/convidados-modelo.csv.
+/convidados*.csv
+
+# Configuração do envio para a VPS (nome do Host SSH desta máquina)
+deploy/vps/deploy.env
+
+# O Profeta Diário: fotos dos convidados baixadas da VPS e cartões das mesas (têm a palavra mágica)
+profeta-fotos/
+profeta-cartao/

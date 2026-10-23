@@ -1,0 +1,19 @@
+# Convite pessoal: não indexar. (Para permitir indexação, troque por "Allow: /"
+# e defina VITE_ALLOW_INDEXING=true.)
+
+# Prévia do link (imagem, título e descrição) no WhatsApp, Instagram, Telegram e afins: esses robôs
+# não indexam, só montam o cartão da conversa. Sem esta liberação, o link chega sem imagem.
+User-agent: facebookexternalhit
+User-agent: Facebot
+User-agent: WhatsApp
+User-agent: TelegramBot
+User-agent: Twitterbot
+User-agent: Slackbot
+User-agent: Discordbot
+User-agent: LinkedInBot
+Allow: /
+Disallow: /profeta/
+Disallow: /api/
+
+User-agent: *
+Disallow: /

@@ -1,0 +1,43 @@
+# Stack "convite-profeta" no Portainer: o serviço d'O Profeta Diário (fotos e vídeos dos convidados).
+# MODELO sem segredos: os valores reais ficam só nas variáveis da stack no Portainer.
+# Passo a passo em docs/arquitetura.md#hospedagem → "O Profeta Diário".
+#
+# - A imagem convite-profeta:latest é construída na própria VPS por `npm run deploy:profeta`.
+# - /opt/convite-profeta/dados é um DISCO DE TAMANHO FIXO (arquivo montado em loop): o serviço nunca
+#   consegue ocupar mais que isso, e o resto da VPS (Evolution, n8n, o convite) não é afetado.
+# - Mesmo domínio do convite: o Traefik leva só /api/profeta para cá (prioridade maior que a do site).
+# - Em Swarm, labels e limites vão em `deploy:` (como abaixo); em compose comum, labels no serviço
+#   e limites em `cpus`/`mem_limit`.
+services:
+  profeta:
+    image: convite-profeta:latest
+    volumes:
+      - /opt/convite-profeta/dados:/dados
+    environment:
+      PROFETA_SENHA: ${PROFETA_SENHA}                    # palavra mágica dos cartões (a mesma dos secrets das Edge Functions)
+      PROFETA_SESSAO_SEGREDO: ${PROFETA_SESSAO_SEGREDO}  # 32+ caracteres aleatórios
+      PROFETA_SECRET: ${PROFETA_SECRET}                  # 32+ caracteres; o mesmo PROFETA_SECRET das Edge Functions
+      PROFETA_COTA_GB: ${PROFETA_COTA_GB}                # ~90% do disco fixo (ex.: 9 para um disco de 10 GB)
+      PROFETA_ABRE_EM: "2027-02-20T00:00:00-03:00"
+      PROFETA_FECHA_EM: "2027-03-07T00:00:00-03:00"
+      EVOLUTION_API_URL: ${EVOLUTION_INTERNAL_URL}       # endereço INTERNO da Evolution na rede Docker (ex.: http://evolution_api:8080)
+      EVOLUTION_API_KEY: ${EVOLUTION_API_KEY}
+      EVOLUTION_INSTANCE: ${EVOLUTION_INSTANCE}
+    networks: [proxy]
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.profeta.rule=Host(`convite.example.com`) && PathPrefix(`/api/profeta`)
+        - traefik.http.routers.profeta.priority=100
+        - traefik.http.routers.profeta.entrypoints=websecure
+        - traefik.http.routers.profeta.tls.certresolver=letsencryptresolver
+        - traefik.http.services.profeta.loadbalancer.server.port=8080
+
+networks:
+  proxy:
+    external: true

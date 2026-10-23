@@ -1,0 +1,518 @@
+/* ==========================================================================
+   CAPÍTULO III — RETRATOS QUE SE MOVEM
+   ========================================================================== */
+.gallery {
+  position: relative;
+  padding-bottom: clamp(4rem, 12vh, 8rem);
+}
+
+.gallery__intro {
+  padding: clamp(5rem, 16vh, 10rem) max(var(--gutter), var(--safe-right)) clamp(1rem, 4vh, 2rem)
+    max(var(--gutter), var(--safe-left));
+}
+
+.gallery__empty {
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+/* Imagem base */
+.gimg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #140b0f;
+}
+
+.gimg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--pos);
+}
+
+@media (orientation: portrait) {
+  .gimg img {
+    object-position: var(--pos-mobile);
+  }
+}
+
+.gimg__tag {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 2px;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold-bright);
+  background: rgba(16, 10, 18, 0.7);
+  box-shadow: 0 0 0 1px rgba(216, 177, 90, 0.4) inset;
+}
+
+.gimg--failed {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-mist);
+  background: repeating-linear-gradient(135deg, #160c11 0 12px, #1b0f15 12px 24px);
+}
+
+/* ==========================================================================
+   Torre espiral de retratos
+   Estado natural (sem JS / movimento reduzido): coluna de quadros. O JS
+   adiciona `.is-tower`, que transforma o bloco num palco 3D fixo (sticky)
+   enquanto a rolagem gira a espiral.
+   ========================================================================== */
+.tower__frames {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(3rem, 8vh, 5rem);
+  margin: 0;
+  padding: clamp(2rem, 6vh, 4rem) max(var(--gutter), var(--safe-right)) 0 max(var(--gutter), var(--safe-left));
+  list-style: none;
+}
+
+.tower-frame {
+  position: relative;
+  width: min(100%, 24rem);
+  aspect-ratio: var(--frame-ratio, 0.68);
+}
+
+.tower-frame[data-orient='h'] {
+  width: min(100%, 40rem);
+}
+
+.tower-frame__front,
+.tower-frame__back,
+.tower-frame__shade {
+  position: absolute;
+  inset: 0;
+}
+
+/* A frente é um botão: amplia a foto (ou traz o quadro para a frente). */
+.tower-frame__front {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+.tower-frame__front:focus-visible {
+  outline: 2px solid var(--color-gold-bright);
+  outline-offset: 4px;
+}
+
+.is-front .tower-frame__front,
+.tower:not(.is-tower) .tower-frame__front {
+  cursor: zoom-in;
+}
+
+/* Selo "Ampliar" com lupa: mostra, também no toque (sem cursor), qual quadro abre
+   a foto. Na torre só aparece no quadro da frente; na coluna estática, em todos. */
+.tower-frame__zoom {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--win-bottom) + 0.7rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem 0.4rem 0.7rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-gold-bright);
+  background: rgba(16, 10, 18, 0.78);
+  box-shadow:
+    0 0 0 1px rgba(216, 177, 90, 0.6) inset,
+    0 4px 16px rgba(0, 0, 0, 0.5);
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.is-tower .tower-frame__zoom {
+  opacity: 0;
+  scale: 0.85;
+  transition:
+    opacity 0.3s ease,
+    scale 0.3s ease;
+}
+
+.is-tower .is-front .tower-frame__zoom {
+  opacity: 1;
+  scale: 1;
+  animation: zoom-hint-glow 2.6s ease-in-out infinite;
+}
+
+@keyframes zoom-hint-glow {
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(242, 212, 138, 0.95) inset,
+      0 4px 16px rgba(0, 0, 0, 0.5),
+      0 0 18px rgba(216, 177, 90, 0.55);
+  }
+}
+
+.tower.is-idle .tower-frame__zoom {
+  animation-play-state: paused;
+}
+
+/* A foto ocupa a abertura da moldura (medidas em frames.ts, geradas por `npm run frames`). */
+.tower-frame__window,
+.tower-frame__shade-window,
+.tower-frame__board {
+  display: block;
+  position: absolute;
+  top: var(--win-top);
+  right: var(--win-right);
+  bottom: var(--win-bottom);
+  left: var(--win-left);
+}
+
+.tower-frame__window {
+  overflow: hidden;
+  background: #140b0f;
+}
+
+.tower-frame__window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+
+.tower-frame__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Retratos que se movem: as fotos "respiram" (zoom lento, cada uma num
+   tempo) e um brilho passa pela foto e pela moldura do quadro da frente.
+   Animações só no modo torre, nos quadros visíveis, e paradas fora da tela. */
+.is-tower .tower-frame:not(.is-far) .tower-frame__window .gimg {
+  animation: portrait-breathe 14s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i, 0) * -3.7s);
+}
+
+@keyframes portrait-breathe {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.1) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+.tower-frame__glint {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 244, 214, 0.28) 48%, transparent 60%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+/* Na moldura, o brilho segue o recorte da arte: a máscara (a própria moldura)
+   fica num contêiner parado e só o brilho de dentro corre. */
+.tower-frame__art-glint {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask: var(--frame-art) center / 100% 100% no-repeat;
+  mask: var(--frame-art) center / 100% 100% no-repeat;
+  mix-blend-mode: screen;
+}
+
+.tower-frame__art-glint .tower-frame__glint {
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 236, 190, 0.7) 48%, transparent 58%);
+}
+
+.is-tower .is-front .tower-frame__art-glint {
+  display: block;
+}
+
+.is-tower .is-front .tower-frame__glint {
+  display: block;
+  animation: portrait-sweep 9s ease-in-out 0.8s infinite;
+}
+
+@keyframes portrait-sweep {
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+  85%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+.tower.is-idle .tower-frame__window .gimg,
+.tower.is-idle .tower-frame__glint {
+  animation-play-state: paused;
+}
+
+/* Profundidade: silhueta escura da moldura + abertura, com opacidade dada pelo JS. */
+.tower-frame__shade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tower-frame__shade-window {
+  background: #07040a;
+}
+
+.tower-frame__art--shade {
+  filter: brightness(0);
+}
+
+/* Verso: tábua escura e a moldura vista por trás, na sombra. */
+.tower-frame__back {
+  display: none;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+
+.tower-frame__board {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)),
+    repeating-linear-gradient(90deg, #24180d 0 7px, #1d1309 7px 15px);
+}
+
+.tower-frame__art--back {
+  filter: brightness(0.26) saturate(0.6);
+}
+
+/* Fita de luz e corredor de partículas: canvas atrás dos quadros. */
+.tower__canvas {
+  display: none;
+  z-index: 0;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* --- Modo torre ---------------------------------------------------------- */
+.tower.is-tower {
+  /* ~½ tela de rolagem por foto. */
+  height: calc(100vh + (var(--count) - 1) * 50vh);
+  height: calc(100svh + (var(--count) - 1) * 50svh);
+}
+
+.is-tower .tower__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: clip;
+  perspective: var(--tower-perspective, 1400px);
+}
+
+.is-tower .tower__canvas {
+  display: block;
+}
+
+.is-tower .tower__frames {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  padding: 0;
+  transform-style: preserve-3d;
+}
+
+.is-tower .tower-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--tower-vw);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.is-tower .tower-frame[data-orient='h'] {
+  width: var(--tower-hw);
+}
+
+.is-tower .tower-frame__front {
+  backface-visibility: hidden;
+}
+
+.is-tower .tower-frame__back {
+  display: block;
+}
+
+/* Quadros distantes: transparentes e sem clique, mas ainda na ordem do Tab. */
+.is-tower .tower-frame.is-far {
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Retrato ampliado (lightbox)
+   ========================================================================== */
+html:has(dialog.lightbox[open]) {
+  overflow: hidden;
+}
+
+.lightbox {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--color-cream);
+  background: transparent;
+  overscroll-behavior: contain;
+}
+
+.lightbox::backdrop {
+  background:
+    radial-gradient(70% 60% at 50% 45%, rgba(74, 42, 92, 0.35), transparent 70%),
+    rgba(6, 3, 8, 0.9);
+}
+
+.lightbox[open],
+.lightbox[open]::backdrop {
+  animation: lightbox-fade 0.35s ease-out;
+}
+
+@keyframes lightbox-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.lightbox__stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: calc(var(--safe-top) + 4.5rem) max(1rem, var(--safe-right)) calc(var(--safe-bottom) + 4rem) max(1rem, var(--safe-left));
+  touch-action: pan-y pinch-zoom;
+}
+
+.lightbox__figure {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  min-height: 0;
+  max-height: 100%;
+  margin: 0;
+  animation: lightbox-photo 0.5s var(--ease-magic, ease-out);
+}
+
+@keyframes lightbox-photo {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+.lightbox .gimg {
+  width: auto;
+  height: auto;
+  background: none;
+}
+
+.lightbox .gimg img {
+  width: auto;
+  height: auto;
+  max-width: min(92vw, 1600px);
+  max-height: calc(100svh - 9rem - var(--safe-top) - var(--safe-bottom));
+  object-fit: contain;
+  object-position: 50% 50%;
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1px rgba(216, 177, 90, 0.55),
+    0 0 0 6px rgba(16, 10, 18, 0.85),
+    0 0 0 7px rgba(216, 177, 90, 0.3),
+    0 30px 90px rgba(0, 0, 0, 0.7),
+    0 0 120px rgba(216, 177, 90, 0.12);
+}
+
+.lightbox .gimg--failed {
+  width: min(80vw, 30rem);
+  aspect-ratio: 3 / 2;
+}
+
+.lightbox__caption {
+  font-style: italic;
+  color: var(--color-mist);
+  text-align: center;
+}
+
+.lightbox__counter {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 1.4rem);
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  color: var(--color-gold-bright);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: calc(var(--safe-top) + 1rem);
+  right: max(1rem, var(--safe-right));
+}
+
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.lightbox__nav--prev {
+  left: max(0.75rem, var(--safe-left));
+}
+
+.lightbox__nav--next {
+  right: max(0.75rem, var(--safe-right));
+}
+
+/* Celular: setas embaixo, ao lado do contador, para não cobrirem a foto. */
+@media (max-width: 699px) {
+  .lightbox__nav {
+    top: auto;
+    bottom: calc(var(--safe-bottom) + 0.6rem);
+    translate: none;
+  }
+
+  .lightbox__nav--prev {
+    left: max(1.5rem, var(--safe-left));
+  }
+
+  .lightbox__nav--next {
+    right: max(1.5rem, var(--safe-right));
+  }
+}
